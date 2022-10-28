@@ -12,6 +12,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 app.use('/', routerHtml);
-app.use('/', routerApi);
+// app.use('/', routerApi);
 
-app.listen(PORT, () => console.log(`Node is listening and available at http://localhost${PORT}/`));
+app.listen(PORT, () => console.log(`Node is listening and available at http://localhost:${PORT}/`));
