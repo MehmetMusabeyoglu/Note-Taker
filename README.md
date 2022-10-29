@@ -14,10 +14,10 @@
 
 ## Description
 
-This is a note taker application that can be used to write and save notes. This application uses an Express.js back end and saves and retrieves note data from a JSON file.
+This is a note taker application that can be used to write, save, and delete custom notes through a simple user interface. This application uses an Express.js for its back end and uses a JSON file as its database structure. When user writes a new note and clicks save button, this note is saved into the JSON file and displayed on the left side bar. When user clicks on one of the saved notes on the left side bar, this note is retrieved from the JSON file and displayed on the webpage. When user clicks on the delete button next to a saved note, this note is deleted from the JSON file and not displayed on the left side bar anymore.   
 
 
-## Depoloyed Link
+## Deployed Link
 
 here
 
@@ -31,22 +31,77 @@ here
 
 ## Screenshots
 
-### *1. Application look*
+### *1. Functionality of the application*
+
+!["Demo Test Gif"]()
+
+### *2. Application look*
 
 !["Webpage Screenshot"]()
 
-### *2. Functionality of the application*
+### *3. Saved notes as JSON*
 
-!["Demo Test Gif"]()
+!["JSON Screenshot"]()
 
 
 ## Code Snippet
 
-### Routes:
-####  The
+### Post method:
+####  The server-side post method for saving new note to the database.
 ```
 
+routerApi.post('/api/notes', (req, res) => {
 
+    let { title, text } = req.body;
+
+    title = title.trim();
+    text = text.trim();
+
+    if (title && text) {
+
+        const newNote = {
+            id: uuidv4(),
+            title,
+            text,
+        };
+
+        readFromDatabase('./db/db.json').then((data) => {
+            let dbNotes = JSON.parse(data);
+            dbNotes.push(newNote);
+            writeToDatabase('./db/db.json', dbNotes);
+        });
+
+        const response = {
+            status: 'success',
+            body: newNote,
+        };
+
+        res.json(response);
+    } else {
+        res.json('Error in posting note!');
+    }
+});
+
+```
+
+### Delete method:
+####  The server-side delete method for deleting saved notes to the database.
+```
+
+routerApi.delete('/api/notes/:id', (req, res) =>
+    readFromDatabase('./db/db.json').then((data) => {
+
+        let dbNotes = JSON.parse(data);
+
+        dbNotes = dbNotes.filter((note) => {
+            return note.id !== req.params.id;
+        })
+
+        writeToDatabase('./db/db.json', dbNotes);
+
+        res.json(JSON.parse(data));
+    })
+);
 
 ```
 
