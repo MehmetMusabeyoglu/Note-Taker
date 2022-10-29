@@ -90,7 +90,7 @@ routerApi.post('/api/notes', (req, res) => {
 ```
 
 ### Delete method:
-####  The server-side delete method for deleting saved notes to the database.
+####  The server-side delete method for deleting saved notes from the database.
 ```
 
 routerApi.delete('/api/notes/:id', (req, res) =>
