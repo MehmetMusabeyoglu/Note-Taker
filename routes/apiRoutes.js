@@ -3,23 +3,25 @@ const fs = require('fs');
 const util = require('util');
 const { v4: uuidv4 } = require('uuid');
 
-const readFromFile = util.promisify(fs.readFile);
 
-const writeToFile = (destination, content) => {
-    fs.writeFile(destination, JSON.stringify(content, null, 4), (err) => {
-        err ? console.error(err) : console.info(`\nData written to ${destination}`)
+const readFromDatabase = util.promisify(fs.readFile);
+
+const writeToDatabase = (database, data) => {
+    fs.writeFile(database, JSON.stringify(data, null, 1), (err) => {
+        err ? console.error(err) : console.info(`\nData written to ${database}`)
     });
 };
-  
+
 
 routerApi.get('/api/notes', (req, res) => {
-    readFromFile("./db/db.json").then((data) => res.json(JSON.parse(data)));
+    readFromDatabase("./db/db.json").then((data) => res.json(JSON.parse(data)));
 });
 
+
 routerApi.get("/api/notes/:id", (req, res) => {
-    readFromFile("./db/db.json").then((data) => {
-        let dbNotes = JSON.parse(data); 
-        res.json(dbNotes[req.params.id]); 
+    readFromDatabase("./db/db.json").then((data) => {
+        let dbNotes = JSON.parse(data);
+        res.json(dbNotes[req.params.id]);
     });
 });
 
@@ -39,14 +41,11 @@ routerApi.post('/api/notes', (req, res) => {
             text,
         };
 
-        readFromFile('./db/db.json').then((data) => {
+        readFromDatabase('./db/db.json').then((data) => {
             let dbNotes = JSON.parse(data);
             dbNotes.push(newNote);
-            writeToFile('./db/db.json', dbNotes);
+            writeToDatabase('./db/db.json', dbNotes);
         });
-
-
-        // writeToFile('./db/db.json', JSON.parse(readFromFile('./db/db.json')).push(newNote));
 
         const response = {
             status: 'success',
@@ -61,24 +60,18 @@ routerApi.post('/api/notes', (req, res) => {
 
 
 routerApi.delete('/api/notes/:id', (req, res) =>
-    readFromFile('./db/db.json').then((data) => {
+    readFromDatabase('./db/db.json').then((data) => {
+
         let dbNotes = JSON.parse(data);
+        // console.log(dbNotes);
 
         dbNotes = dbNotes.filter((note) => {
-            note !== dbNotes[req.params.id]
+            return note.id !== req.params.id;
         })
+        // console.log(dbNotes);
 
-        writeToFile('./db/db.json', dbNotes);
-        console.log(dbNotes);
+        writeToDatabase('./db/db.json', dbNotes);
 
-
-
-        //    res.json(dataArr[req.params.id]);
-        //     for(let i=0; i<dataArr.length; i++){
-        //         if(dataArr[i] === req.params.id){
-        //             console.log(req.params.id);
-        //         }
-        //     }
         res.json(JSON.parse(data));
     })
 );
