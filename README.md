@@ -10,6 +10,7 @@
 * [Technologies Used](#technologies-used)
 * [Credits](#credits)
 * [Author Links](#author-links)
+* [License](#license)
 
 
 ## Description
@@ -19,7 +20,7 @@ This is a note taker application that can be used to write, save, and delete cus
 
 ## Deployed Link
 
-here
+Deployed link is [here]()
 
 
 ## User Story
@@ -33,15 +34,19 @@ here
 
 ### *1. Functionality of the application*
 
-!["Demo Test Gif"]()
+<p align="center">
+  <img width="auto" height="auto" src="./images/Functionality.gif">
+</p>
+
+
 
 ### *2. Application look*
 
-!["Webpage Screenshot"]()
+!["Webpage Screenshot"](./images/MainWebpage%20.jpg)
 
 ### *3. Saved notes as JSON*
 
-!["JSON Screenshot"]()
+!["JSON Screenshot"](./images/JSON.jpg)
 
 
 ## Code Snippet
